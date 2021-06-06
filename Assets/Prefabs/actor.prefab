@@ -689,9 +689,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 584c742cdc5ed424384bfe1b40466ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activateRagdollListener:
-    gameEvent: {fileID: 11400000, guid: dbdbc9a3543db894a954a1cd2ed1f73b, type: 2}
+  inputDirection: {fileID: 11400000, guid: 809be955130ad4d4c820371c48118228, type: 2}
   actorSet: {fileID: 11400000, guid: b3ab471e037f2a54085cb1a31e34d71c, type: 2}
+  rotateMultiplier: 0
   ragdollBody: {fileID: 7728207716754937792}
   handle: {fileID: 5872863122939052942}
   collision_actor_Listener: {fileID: 1540926114331659537}

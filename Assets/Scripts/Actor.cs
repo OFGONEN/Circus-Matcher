@@ -11,10 +11,12 @@ public class Actor : MonoBehaviour
 {
 	#region Fields
 	[Header( "Shared Variables" )]
+	public SharedVector2 inputDirection;
 	public ActorSet actorSet;
 
 	[HorizontalLine( 2, EColor.Blue )]
-	[Header( "Actor Objects" )]
+	[Header( "Actor Related" )]
+	public float rotateMultiplier;
 	public Transform ragdollBody;
 	public GameObject handle;
 	public ColliderListener_EventRaiser collision_actor_Listener;
@@ -49,6 +51,11 @@ public class Actor : MonoBehaviour
 		ragdollColliders   = ragdollBody.GetComponentsInChildren< Collider  >();
 		collider_actor     = collision_actor_Listener.GetComponent< Collider >();
 	}
+
+	private void Update()
+	{
+		transform.Rotate( Vector3.up * inputDirection.sharedValue.x * rotateMultiplier, Space.World ); // Rotate around Y axis
+	}
 #endregion
 
 #region API
@@ -57,6 +64,8 @@ public class Actor : MonoBehaviour
 	{
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
+
+		rotateMultiplier = 0;
 
 		ragdollBody.SetParent( null );
 
