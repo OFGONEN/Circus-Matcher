@@ -37,18 +37,15 @@ public class ArcPathGenerator : MonoBehaviour
     [ Button(), EnableIf( "CanGenerate" ) ]
     public void GenerateWaypoints()
     {
-		Transform waypointsParentTransform;
-		if( ( waypointsParentTransform = transform.Find( "waypoints" ) ) != null ) // There already is a GameObject named "waypoints".
-            // Remove all children as they will be created again now.
-            for( var i = waypointsParentTransform.childCount - 1; i >= 0; i-- )
-                DestroyImmediate( waypointsParentTransform.GetChild( i ).gameObject );
-		else // Create a GameObject named "waypoints".
-        {
-			waypointsParentTransform = new GameObject( "waypoints" ).transform;
-			waypointsParentTransform.SetParent( transform );
-        }
+        /* First remove all child waypoint GameObjects. */
+		for( var i = transform.childCount - 1; i >= 0; i-- )
+		{
+			var child = transform.GetChild( i );
+			if( child.name.Contains( "waypoint_" ) )
+				DestroyImmediate( child.gameObject );
+		}
 
-        if( waypoints == null )
+		if( waypoints == null )
 			waypoints = new List<Transform>();
 		else 
             waypoints.Clear();
@@ -75,7 +72,7 @@ public class ArcPathGenerator : MonoBehaviour
 							   y * verticalDirection;
 			Transform waypointTransform = new GameObject( "waypoint_" + ( i + 1 ) ).transform;
 			waypointTransform.position = position;
-			waypointTransform.SetParent( waypointsParentTransform );
+			waypointTransform.SetParent( transform );
 			waypoints.Add( waypointTransform );
 
 			/* Don't include the pair [N-1, N]. */
