@@ -12,7 +12,8 @@ public class Actor : MonoBehaviour
 	#region Fields
 	[Header( "Shared Variables" )]
 	public SharedVector2 inputDirection;
-	public ActorSet actorSet;
+	public ActorSet actor_obstacleCollider_set;
+	public ActorSet actor_actorCollider_set;
 
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
@@ -33,14 +34,16 @@ public class Actor : MonoBehaviour
 	#region Unity API
 	private void OnEnable()
 	{
-		actorSet.AddDictionary( collider_obstacle.gameObject.GetInstanceID(), this );
+		actor_obstacleCollider_set.AddDictionary( collider_obstacle.gameObject.GetInstanceID(), this );
+		actor_actorCollider_set   .AddDictionary( collider_actor.gameObject.GetInstanceID(), this );
 
 		collision_actor_Listener.triggerEnter += OnActorCollision;
 	}
 
 	private void OnDisable()
 	{
-		actorSet.RemoveDictionary( collider_obstacle.gameObject.GetInstanceID() );
+		actor_obstacleCollider_set.RemoveDictionary( collider_obstacle.gameObject.GetInstanceID() );
+		actor_actorCollider_set   .RemoveDictionary( collider_actor.gameObject.GetInstanceID() );
 
 		collision_actor_Listener.triggerEnter -= OnActorCollision;
 	}
@@ -92,6 +95,8 @@ public class Actor : MonoBehaviour
 	{
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
+
+
 	}
 #endregion
 
