@@ -12,39 +12,44 @@ namespace FFStudio
         public EventListenerDelegateResponse levelLoadedListener;
         public EventListenerDelegateResponse levelRevealedListener;
         public EventListenerDelegateResponse levelStartedListener;
+		public EventListenerDelegateResponse collisionObstacleListener;
 
-        [Header("Fired Events")]
+		[Header("Fired Events")]
         public GameEvent levelFailedEvent;
         public GameEvent levelCompleted;
 
+
         [Header("Level Releated")]
         public SharedFloatProperty levelProgress;
+		public ActorSet actorSet;
 
-        #endregion
+		#endregion
 
-        #region UnityAPI
+		#region UnityAPI
 
-        private void OnEnable()
+		private void OnEnable()
         {
-            levelLoadedListener  .OnEnable();
-            levelRevealedListener.OnEnable();
-            levelStartedListener .OnEnable();
-        }
+            levelLoadedListener      .OnEnable();
+            levelRevealedListener    .OnEnable();
+            levelStartedListener     .OnEnable();
+			collisionObstacleListener.OnEnable();
+		}
 
         private void OnDisable()
         {
-            levelLoadedListener  .OnDisable();
-            levelRevealedListener.OnDisable();
-            levelStartedListener .OnDisable();
+            levelLoadedListener      .OnDisable();
+            levelRevealedListener    .OnDisable();
+            levelStartedListener     .OnDisable();
+			collisionObstacleListener.OnDisable();
         }
 
         private void Awake()
         {
-
-            levelLoadedListener.response   = LevelLoadedResponse;
-            levelRevealedListener.response = LevelRevealedResponse;
-            levelStartedListener.response  = LevelStartedResponse;
-        }
+            levelLoadedListener.response       = LevelLoadedResponse;
+            levelRevealedListener.response     = LevelRevealedResponse;
+            levelStartedListener.response      = LevelStartedResponse;
+            collisionObstacleListener.response = CollisionObstacleResponse;
+		}
 
         #endregion
 
@@ -64,6 +69,22 @@ namespace FFStudio
 
         }
 
-        #endregion
-    }
+		void CollisionObstacleResponse()
+		{
+			var changeEvent = collisionObstacleListener.gameEvent as ReferenceGameEvent;
+			var instanceId = ( changeEvent.eventValue as Collider ).gameObject.GetInstanceID();
+
+			Actor actor;
+			actorSet.itemDictionary.TryGetValue( instanceId, out actor );
+
+			if( actor == null )
+				return;
+
+			actor.ActivateRagdoll();
+            FFLogger.Log( "Activate Ragdoll: " + actor.gameObject.name );
+
+			// levelFailedEvent.Raise();
+		}
+		#endregion
+	}
 }
