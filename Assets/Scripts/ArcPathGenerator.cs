@@ -37,13 +37,6 @@ public class ArcPathGenerator : MonoBehaviour
     [ Button(), EnableIf( "CanGenerate" ) ]
     public void GenerateWaypoints()
     {
-        var horizontalDistance  = Vector3.Distance( endPointOffset, startPointOffset );
-		var horizontalDelta     = horizontalDistance / ( numberOfWaypoints - 1 );
-		var horizontalDirection = ( endPointOffset - startPointOffset ).normalized;
-        
-		var verticalDistance    = height;
-		var verticalDirection   = -Vector3.up;
-
 		Transform waypointsParentTransform;
 		if( ( waypointsParentTransform = transform.Find( "waypoints" ) ) != null ) // There already is a GameObject named "waypoints".
             // Remove all children as they will be created again now.
@@ -59,10 +52,22 @@ public class ArcPathGenerator : MonoBehaviour
 			waypoints = new List<Transform>();
 		else 
             waypoints.Clear();
-		waypointVectors = new Vector3[ 2 * ( numberOfWaypoints - 1 ) ];
 
+		/* Handles.DrawDottedLines() expects PAIRS of positions (start & end) for each LINE SEGMENT.
+		 * In an array of N points, there are N-1 line segments and the number of pairs are the double of line segment count. */
+		waypointVectors = new Vector3[ 2 * ( numberOfWaypoints - 1 ) ];
+        
+        var horizontalDistance  = Vector3.Distance( endPointOffset, startPointOffset );
+		var horizontalDelta     = horizontalDistance / ( numberOfWaypoints - 1 );
+		var horizontalDirection = ( endPointOffset - startPointOffset ).normalized;
+        
+		var verticalDistance    = height;
+		var verticalDirection   = -Vector3.up;
+
+        /* Generate waypoints and pairs for Handles.DrawDottedLines(). */
 		for( var i = 0; i < numberOfWaypoints; i++ )
         {
+            /* This waypoint. */
 			var x = i * horizontalDelta;
 			var y = curve.Evaluate( ( float )x / horizontalDistance ) * verticalDistance;
 			Vector3 position = transform.position + startPointOffset +
@@ -72,9 +77,11 @@ public class ArcPathGenerator : MonoBehaviour
 			waypointTransform.position = position;
 			waypointTransform.SetParent( waypointsParentTransform );
 			waypoints.Add( waypointTransform );
-            
-            if( i < numberOfWaypoints - 1 )
+
+			/* Don't include the pair [N-1, N]. */
+			if( i < numberOfWaypoints - 1 )
             {
+				/* Next waypoint. */
 				var nextX = ( i + 1 ) * horizontalDelta;
 				var nextY = curve.Evaluate( ( float )nextX / horizontalDistance ) * verticalDistance;
 				Vector3 nextPosition = transform.position + startPointOffset +
@@ -100,6 +107,7 @@ public class ArcPathGenerator : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+        /* Waypoints. */
 		if( waypoints == null || waypoints.Count < 2 )
 		{
 		    Gizmos.color = Color.red;
@@ -114,6 +122,7 @@ public class ArcPathGenerator : MonoBehaviour
 				Gizmos.DrawWireSphere( waypoints[ i ].position, 0.1f );
 			}
 
+		/* Line segments as dotted lines. */
 		Handles.color = Color.black;
 		if( waypointVectors != null && waypointVectors.Length > 0 )
 			Handles.DrawDottedLines( waypointVectors, 1.0f );
