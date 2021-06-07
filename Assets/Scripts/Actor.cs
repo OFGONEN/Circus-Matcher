@@ -19,6 +19,7 @@ public class Actor : MonoBehaviour
 
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
+	public int coupleID;
 	public float rotateMultiplier;
 	public Transform ragdollBody;
 	public GameObject handle;

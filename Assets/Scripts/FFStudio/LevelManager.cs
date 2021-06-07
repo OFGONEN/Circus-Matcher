@@ -108,8 +108,17 @@ namespace FFStudio
 					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.baseActorID, out baseActor );
 					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.targetActorID, out targetActor );
 
-					baseActor.ActivateRagdoll();
-					targetActor.ActivateRagdoll();
+                    if (baseActor.coupleID == targetActor.coupleID)
+                    {
+                        FFLogger.Log( "Ascent" );
+                    }
+                    else 
+                    {
+						// levelFailedEvent.Raise();
+
+						baseActor.ActivateRagdoll();
+					    targetActor.ActivateRagdoll();
+                    }
 
                     FFLogger.Log( "Collision between " + baseActor.gameObject.name + " - " + targetActor.gameObject.name );
 					return;
