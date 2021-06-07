@@ -690,6 +690,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputDirection: {fileID: 11400000, guid: 809be955130ad4d4c820371c48118228, type: 2}
+  mainCamera: {fileID: 11400000, guid: dc41dfc4a52617f46a91ba5565841023, type: 2}
+  levelProgressIndicator: {fileID: 11400000, guid: 189afb035a1e75944a5d173ee3ef0990, type: 2}
   actorSet: {fileID: 11400000, guid: b3ab471e037f2a54085cb1a31e34d71c, type: 2}
   actorCollisionEvent: {fileID: 11400000, guid: 2fa70591f03f3c54cb5bc81decff4acb, type: 2}
   coupleID: 0

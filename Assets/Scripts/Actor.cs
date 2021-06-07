@@ -12,6 +12,8 @@ public class Actor : MonoBehaviour
 	#region Fields
 	[Header( "Shared Variables" )]
 	public SharedVector2 inputDirection;
+	public SharedReferenceProperty mainCamera;
+	public SharedReferenceProperty levelProgressIndicator;
 	public ActorSet actorSet;
 
 	[Header( "Fired Events" )]
@@ -100,20 +102,28 @@ public class Actor : MonoBehaviour
 
 		DOVirtual.DelayedCall( 0.25f, () => 
 		{
+			// Make base rigidbody kinematic for tweening
 			attachPoint.isKinematic = true;
 			attachPoint.useGravity  = false;
 
-			var coupleParent = new GameObject( "CoupleParent" ).transform;
-			coupleParent.position = attachPoint.position;
-			coupleParent.eulerAngles = attachPoint.rotation.eulerAngles;
+			// Create a empty object to child both of the ragdoll
+			var coupleParent             = new GameObject( "CoupleParent" ).transform;
+			    coupleParent.position    = attachPoint.position;
+			    coupleParent.eulerAngles = attachPoint.rotation.eulerAngles;
 
-			ragdollBody.SetParent( coupleParent );
+			ragdollBody       .SetParent( coupleParent );
 			target.ragdollBody.SetParent( coupleParent );
+
+			var camera    = mainCamera.sharedValue as Camera;
+			var indicator = levelProgressIndicator.sharedValue as RectTransform;
+
+			var targetPosition   = camera.ScreenToWorldPoint( indicator.position );
+			    targetPosition.z = coupleParent.position.z;
 
 			ascentTween = DOTween.Sequence();
 
-			ascentTween.Join( coupleParent.DOMove( ragdollBody.position + Vector3.up * 4, 0.75f ) );
-			ascentTween.Join( coupleParent.DOLookAt( ragdollBody.position + Vector3.up * 4, 0.75f ) );
+			ascentTween.Join( coupleParent.DOMove( targetPosition, 0.75f ) );
+			ascentTween.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
 			ascentTween.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
 
 			ascentTween.OnComplete( () => ascentTween = null );
