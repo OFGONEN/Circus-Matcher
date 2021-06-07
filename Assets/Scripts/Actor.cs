@@ -32,6 +32,7 @@ public class Actor : MonoBehaviour
 
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
+	public Animator actorAnimator;
 	public Transform ragdollBody;
 	public Rigidbody attachPoint;
 	public Transform handle;
@@ -121,6 +122,7 @@ public class Actor : MonoBehaviour
 	private void Start()
 	{
 		actorSpawned.Raise();
+		actorAnimator.SetFloat( "normalized", 0 );
 	}
 
 	private void Update()
@@ -186,6 +188,8 @@ public class Actor : MonoBehaviour
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
 
+		actorAnimator.enabled = false;
+
 		rotateMultiplier = 0;
 
 		ragdollBody.SetParent( null );
@@ -235,7 +239,7 @@ public class Actor : MonoBehaviour
 	private void OnSwingUpdate()
 	{
 		var normalizedTime = swingNormalizedTime();
-		// animator set normalized time
+		actorAnimator.SetFloat( "normalized", normalizedTime );
 	}
 
 	private float GetNormalizedTime_Foward()
