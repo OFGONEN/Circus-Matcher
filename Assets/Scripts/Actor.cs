@@ -89,6 +89,23 @@ public class Actor : MonoBehaviour
 		targetJoint.connectedMassScale  = 1;
 		targetJoint.massScale           = 1;
 
+
+		DOVirtual.DelayedCall( 0.25f, () => 
+		{
+			attachPoint.isKinematic = true;
+			attachPoint.useGravity  = false;
+
+			var coupleParent = new GameObject( "CoupleParent" ).transform;
+			coupleParent.position = attachPoint.position;
+			coupleParent.eulerAngles = attachPoint.rotation.eulerAngles;
+
+			ragdollBody.SetParent( coupleParent );
+			target.ragdollBody.SetParent( coupleParent );
+
+			coupleParent.DOMove( ragdollBody.position + Vector3.up * 4, 0.75f );
+			coupleParent.DOLookAt( ragdollBody.position + Vector3.up * 4, 0.75f );
+			coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f );
+		} );
 	}
 
 	[Button]
