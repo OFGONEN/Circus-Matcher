@@ -58,6 +58,9 @@ public class Actor : MonoBehaviour
 	private Sequence ascentSequence;
 	private Sequence swingSequence;
 
+	private GetNormalizedTime swingNormalizedTime;
+	private GetNormalizedTime next_swingNormalizedTime;
+
 #endregion
 
 #region Unity API
@@ -198,6 +201,9 @@ public class Actor : MonoBehaviour
 #region Implementation
 	private void StartSwinging()
 	{
+		swingNormalizedTime      = GetNormalizedTime_Foward;
+		next_swingNormalizedTime = GetNormalizedTime_Backward;
+
 		swingSequence = DOTween.Sequence();
 
 		swingSequence.SetDelay( swingWaitDuration );
@@ -205,11 +211,31 @@ public class Actor : MonoBehaviour
 		swingSequence.AppendInterval( swingWaitDuration );
 		swingSequence.SetLoops( -1, LoopType.Yoyo );
 		swingSequence.OnStepComplete( OnSwingStopComplete );
+		swingSequence.OnUpdate( OnSwingUpdate );
 	}
 
 	private void OnSwingStopComplete()
 	{
-		FFLogger.Log( "Loop" );
+		var current                  = swingNormalizedTime;
+		    swingNormalizedTime      = next_swingNormalizedTime;
+		    next_swingNormalizedTime = current;
+	}
+
+	[Button]
+	private void OnSwingUpdate()
+	{
+		var normalizedTime = swingNormalizedTime();
+		// animator set normalized time
+	}
+
+	private float GetNormalizedTime_Foward()
+	{
+		return swingSequence.ElapsedPercentage( false );
+	}
+
+	private float GetNormalizedTime_Backward()
+	{
+		return 1 - swingSequence.ElapsedPercentage( false );
 	}
 	private void OnActorCollision( Collider other )
 	{
