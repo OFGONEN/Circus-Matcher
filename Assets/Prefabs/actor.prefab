@@ -692,8 +692,10 @@ MonoBehaviour:
   inputDirection: {fileID: 11400000, guid: 809be955130ad4d4c820371c48118228, type: 2}
   actorSet: {fileID: 11400000, guid: b3ab471e037f2a54085cb1a31e34d71c, type: 2}
   actorCollisionEvent: {fileID: 11400000, guid: 2fa70591f03f3c54cb5bc81decff4acb, type: 2}
+  coupleID: 0
   rotateMultiplier: 0
   ragdollBody: {fileID: 7728207716754937792}
+  attachPoint: {fileID: 7839256796450989682}
   handle: {fileID: 5872863122939052942}
   collision_actor_Listener: {fileID: 1540926114331659537}
   collider_obstacle: {fileID: 2345453735840090735}
@@ -970,6 +972,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cca4301af9c67fc4ea256456366f46d2, type: 3}
+--- !u!54 &7839256796450989682 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4981760091859973435, guid: cca4301af9c67fc4ea256456366f46d2, type: 3}
+  m_PrefabInstance: {fileID: 3019776718647907145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7728207716754937792 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4803226535557104777, guid: cca4301af9c67fc4ea256456366f46d2, type: 3}

@@ -22,8 +22,18 @@ public class Actor : MonoBehaviour
 	public int coupleID;
 	public float rotateMultiplier;
 	public Transform ragdollBody;
+	public Rigidbody attachPoint;
 	public GameObject handle;
 	public ColliderListener_EventRaiser collision_actor_Listener;
+
+	// Property
+	public Rigidbody GetAttachPoint 
+	{
+		get 
+		{
+			return attachPoint;
+		}
+	}
 
 	// Private Fields
 	private Rigidbody[] ragdollRigidbodies;
@@ -65,6 +75,22 @@ public class Actor : MonoBehaviour
 #endregion
 
 #region API
+	public void Ascent(Actor target)
+	{
+		// FFLogger.Log( "Ascent: " + gameObject.name + " - " + target.gameObject.name );
+		ActivateRagdoll();
+		target.ActivateRagdoll();
+
+		var targetAttachPoint = target.GetAttachPoint;
+		var targetJoint       = targetAttachPoint.gameObject.AddComponent< FixedJoint >();
+
+		targetJoint.connectedBody       = attachPoint;
+		targetJoint.enablePreprocessing = false;
+		targetJoint.connectedMassScale  = 1;
+		targetJoint.massScale           = 1;
+
+	}
+
 	[Button]
 	public void ActivateRagdoll()
 	{
@@ -99,7 +125,7 @@ public class Actor : MonoBehaviour
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
 
-		FFLogger.Log( "Actor Collision: " + collider_actor.gameObject.GetInstanceID() + " - " + other.gameObject.GetInstanceID() );
+		// FFLogger.Log( "Actor Collision: " + collider_actor.gameObject.GetInstanceID() + " - " + other.gameObject.GetInstanceID() );
 
 		actorCollisionEvent.actorCollision.baseActorID   = collider_actor.gameObject.GetInstanceID();
 		actorCollisionEvent.actorCollision.targetActorID = other.gameObject.GetInstanceID();
