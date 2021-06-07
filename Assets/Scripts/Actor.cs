@@ -21,13 +21,15 @@ public class Actor : MonoBehaviour
 	public GameEvent actorSpawned;
 	public GameEvent ascentComplete;
 
+	[ BoxGroup( "Configure" ), Tooltip( "Actor that has same couple ID will match correctly" ) ] public int coupleID;
+	[ BoxGroup( "Configure" ), Tooltip( "Multiply the input coming for rotating" ) ] public float rotateMultiplier;
+	[ BoxGroup( "Configure" ), Tooltip( "Swing duration for one way" ) ] public float swingDuration = 1f;
+
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
-	public int coupleID;
-	public float rotateMultiplier;
 	public Transform ragdollBody;
 	public Rigidbody attachPoint;
-	public GameObject handle;
+	public Transform handle;
 	public ColliderListener_EventRaiser collision_actor_Listener;
 
 	// Property
@@ -46,7 +48,10 @@ public class Actor : MonoBehaviour
 	private Collider collider_actor;
 	[ SerializeField ] private Collider collider_obstacle;
 
-	private Sequence ascentTween;
+	[ SerializeField, ReadOnly ] private Vector3[] swingWayPoints;
+
+	private Sequence ascentSequence;
+	private Sequence swingSequence;
 
 	#endregion
 
@@ -66,10 +71,16 @@ public class Actor : MonoBehaviour
 
 		collision_actor_Listener.triggerEnter -= OnActorCollision;
 
-		if(ascentTween != null)
+		if( ascentSequence != null )
 		{
-			ascentTween.Kill();
-			ascentTween = null;
+			ascentSequence.Kill();
+			ascentSequence = null;
+		}
+
+		if( swingSequence != null )
+		{
+			swingSequence.Kill();
+			swingSequence = null;
 		}
 	}
 
@@ -83,6 +94,8 @@ public class Actor : MonoBehaviour
 	private void Start()
 	{
 		actorSpawned.Raise();
+
+		StartSwinging(); // put in to level revealed 
 	}
 
 	private void Update()
@@ -127,19 +140,24 @@ public class Actor : MonoBehaviour
 			var targetPosition   = camera.ScreenToWorldPoint( indicator.position );
 			    targetPosition.z = coupleParent.position.z;
 
-			ascentTween = DOTween.Sequence();
+			ascentSequence = DOTween.Sequence();
 
-			ascentTween.Join( coupleParent.DOMove( targetPosition, 0.75f ) );
-			ascentTween.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
-			ascentTween.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
+			ascentSequence.Join( coupleParent.DOMove( targetPosition, 0.75f ) );
+			ascentSequence.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
+			ascentSequence.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
 
-			ascentTween.OnComplete( OnAscentDone );
+			ascentSequence.OnComplete( OnAscentDone );
 		} );
 	}
 
-	[Button]
 	public void ActivateRagdoll()
 	{
+		if( swingSequence != null )
+		{
+			swingSequence.Kill();
+			swingSequence = null;
+		}
+
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
 
@@ -166,6 +184,14 @@ public class Actor : MonoBehaviour
 #endregion
 
 #region Implementation
+	private void StartSwinging()
+	{
+		swingSequence = DOTween.Sequence();
+
+		swingSequence.Append( handle.DOLocalPath( swingWayPoints, swingDuration ) );
+
+		swingSequence.SetLoops( -1, LoopType.Yoyo );
+	}
 	private void OnActorCollision( Collider other )
 	{
 		collider_actor.enabled    = false;
@@ -180,7 +206,7 @@ public class Actor : MonoBehaviour
 
 	private void OnAscentDone()
 	{
-		ascentTween = null;
+		ascentSequence = null;
 		ascentComplete.Raise();
 	}
 #endregion
@@ -189,6 +215,17 @@ public class Actor : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 
+	}
+
+	[ Button ]
+	private void SetSwingWayPoints()
+	{
+		var waypointsParent = transform.GetChild( 3 );
+
+		swingWayPoints = new Vector3[ waypointsParent.childCount ];
+
+		for( var i = 0; i < waypointsParent.childCount; i++ )
+			swingWayPoints[ i ] = waypointsParent.GetChild( i ).position - transform.position;
 	}
 #endif
 }
