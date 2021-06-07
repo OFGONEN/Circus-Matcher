@@ -47,20 +47,35 @@ public class Actor : MonoBehaviour
 		}
 	}
 
-	// Private Fields
+	public bool SwingingFoward
+	{
+		get
+		{
+			return swingingFoward;
+		}
+	}
+
+	// Private Fields \\
+
+	// Ragdoll
 	private Rigidbody[] ragdollRigidbodies;
 	private Collider[] ragdollColliders;
 
+	// Actor colliders
 	private Collider collider_actor;
 	[ SerializeField ] private Collider collider_obstacle;
 
+	// Swinging path points
 	[ SerializeField, ReadOnly ] private Vector3[] swingWayPoints;
 
+	// Sequences
 	private Sequence ascentSequence;
 	private Sequence swingSequence;
 
+	// swing control variables
 	private GetNormalizedTime swingNormalizedTime;
 	private GetNormalizedTime next_swingNormalizedTime;
+	private bool swingingFoward = true;
 
 #endregion
 
@@ -123,6 +138,8 @@ public class Actor : MonoBehaviour
 	{
 		actorSpawned.Raise();
 		actorAnimator.SetFloat( "normalized", 0 );
+
+		swingingFoward = true;
 	}
 
 	private void Update()
@@ -233,6 +250,8 @@ public class Actor : MonoBehaviour
 		var current                  = swingNormalizedTime;
 		    swingNormalizedTime      = next_swingNormalizedTime;
 		    next_swingNormalizedTime = current;
+
+		swingingFoward = !swingingFoward;
 	}
 
 	[Button]
