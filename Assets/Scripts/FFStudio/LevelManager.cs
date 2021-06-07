@@ -105,7 +105,7 @@ namespace FFStudio
 			actor.ActivateRagdoll();
             FFLogger.Log( "Activate Ragdoll: " + actor.gameObject.name );
 
-			// levelFailedEvent.Raise();
+			levelFailedEvent.Raise();
 		}
 
         void CollisionActorResponse()
@@ -130,7 +130,7 @@ namespace FFStudio
 					}
                     else 
                     {
-						// levelFailedEvent.Raise();
+						levelFailedEvent.Raise();
 
 						baseActor.ActivateRagdoll();
 					    targetActor.ActivateRagdoll();
@@ -159,12 +159,21 @@ namespace FFStudio
 				() => levelProgress.sharedValue, // Getter
 				x => levelProgress.SetValue( x ), // Setter
 				progress, // End value
-				GameSettings.Instance.ui_Entity_Move_TweenDuration /* duration */ );
+				GameSettings.Instance.ui_Entity_Move_TweenDuration /* duration */ )
+				.OnComplete( RaiseLevelComplete );
 		}
 
         void ActorSpawned()
         {
 			actor_Count++;
+		}
+
+		void RaiseLevelComplete()
+		{
+			int coupleCount = actor_Count / 2;
+
+			if ( coupleCount == actor_CoupleMatched_Count )
+				levelCompleted.Raise();
 		}
 #endregion
 	}
