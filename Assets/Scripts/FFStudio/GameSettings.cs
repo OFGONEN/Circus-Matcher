@@ -8,6 +8,7 @@ namespace FFStudio
 	public class GameSettings : ScriptableObject
     {
 #region Fields
+        [ BoxGroup ( "Actor" ) ] public float actor_ascentDistance_Z = 5;
         [ HideInInspector ] public int maxLevelCount;
         [Foldout("UI Settings"), Tooltip("Duration of the movement for ui element")] public float ui_Entity_Move_TweenDuration;
         [Foldout("UI Settings"), Tooltip("Duration of the fading for ui element")] public float ui_Entity_Fade_TweenDuration;

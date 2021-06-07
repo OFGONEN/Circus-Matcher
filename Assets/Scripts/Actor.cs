@@ -164,7 +164,7 @@ public class Actor : MonoBehaviour
 		targetJoint.massScale           = 1;
 
 
-		DOVirtual.DelayedCall( 0.25f, () => 
+		DOVirtual.DelayedCall( 1f, () => 
 		{
 			// Make base rigidbody kinematic for tweening
 			attachPoint.isKinematic = true;
@@ -181,8 +181,9 @@ public class Actor : MonoBehaviour
 			var camera    = mainCamera.sharedValue as Camera;
 			var indicator = levelProgressIndicator.sharedValue as RectTransform;
 
-			var targetPosition   = camera.ScreenToWorldPoint( indicator.position );
-			    targetPosition.z = coupleParent.position.z;
+			var screenPos      = indicator.position;
+			    screenPos.z    = GameSettings.Instance.actor_ascentDistance_Z;
+			var targetPosition = camera.ScreenToWorldPoint( screenPos );
 
 			ascentSequence = DOTween.Sequence();
 
@@ -190,7 +191,7 @@ public class Actor : MonoBehaviour
 			ascentSequence.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
 			ascentSequence.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
 
-			ascentSequence.OnComplete( OnAscentDone );
+			ascentSequence.OnComplete( () => OnAscentDone( target ) );
 		} );
 	}
 
@@ -282,10 +283,13 @@ public class Actor : MonoBehaviour
 		actorCollisionEvent.Raise();
 	}
 
-	private void OnAscentDone()
+	private void OnAscentDone( Actor target )
 	{
 		ascentSequence = null;
 		ascentComplete.Raise();
+
+		ragdollBody.gameObject	     .SetActive( false );
+		target.ragdollBody.gameObject.SetActive( false );
 	}
 #endregion
 
