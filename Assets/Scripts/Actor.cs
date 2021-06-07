@@ -104,6 +104,16 @@ public class Actor : MonoBehaviour
 		ragdollColliders   = ragdollBody.GetComponentsInChildren< Collider  >();
 		collider_actor     = collision_actor_Listener.GetComponent< Collider >();
 
+		foreach( var ragdoll in ragdollRigidbodies )
+		{
+			ragdoll.isKinematic = true;
+			ragdoll.useGravity  = false;
+		}
+
+		foreach( var collider in ragdollColliders )
+			collider.isTrigger = true;
+
+
 		levelRevealedListener.response = StartSwinging;
 		levelFailedListener.response   = ActivateRagdoll;
 	}
