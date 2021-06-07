@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!43 &178872462
+--- !u!43 &67926210
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -766,7 +766,37 @@ Transform:
   m_Father: {fileID: 417541488}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &1026552180
+--- !u!1 &1098584357
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1098584358}
+  m_Layer: 0
+  m_Name: waypoint_6
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1098584358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098584357}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.4444447, y: -5.9533606, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 417541488}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!43 &1102765380
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -930,36 +960,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1098584357
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1098584358}
-  m_Layer: 0
-  m_Name: waypoint_6
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1098584358
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098584357}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.4444447, y: -5.9533606, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 417541488}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1214001918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1780,83 +1780,83 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[0].x
-      value: 3.75
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[0].y
-      value: 2
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[1].x
-      value: 2.8611112
+      value: 1.1111112
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[1].y
-      value: 1.4787378
+      value: -4.521262
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[2].x
-      value: 1.9722222
+      value: 0.22222221
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[2].y
-      value: 0.89163256
+      value: -5.1083674
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[3].x
-      value: 1.0833333
+      value: -0.66666675
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[3].y
-      value: 0.3703704
+      value: -5.6296296
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[4].x
-      value: 0.19444442
+      value: -1.5555556
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[4].y
-      value: 0.046639442
+      value: -5.9533606
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[5].x
-      value: -0.69444466
+      value: -2.4444447
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[5].y
-      value: 0.046639442
+      value: -5.9533606
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[6].x
-      value: -1.5833335
+      value: -3.3333335
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[6].y
-      value: 0.3703704
+      value: -5.6296296
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[7].x
-      value: -2.4722223
+      value: -4.2222223
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[7].y
-      value: 0.89163256
+      value: -5.1083674
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[8].x
-      value: -3.3611112
+      value: -5.111111
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[8].y
-      value: 1.4787378
+      value: -4.521262
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[9].x
-      value: -4.25
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435784, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: swingWayPoints.Array.data[9].y
-      value: 2
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 6202454793694435787, guid: d6034ab0828aded44a65a1d9911f7c12, type: 3}
       propertyPath: m_LocalPosition.x

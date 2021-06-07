@@ -9,7 +9,11 @@ using NaughtyAttributes;
 
 public class Actor : MonoBehaviour
 {
-	#region Fields
+#region Fields
+	[Header( "Event Listeners" )]
+	public EventListenerDelegateResponse levelRevealedListener;
+	public EventListenerDelegateResponse levelFailedListener;
+
 	[Header( "Shared Variables" )]
 	public SharedVector2 inputDirection;
 	public SharedReferenceProperty mainCamera;
@@ -53,15 +57,18 @@ public class Actor : MonoBehaviour
 	private Sequence ascentSequence;
 	private Sequence swingSequence;
 
-	#endregion
+#endregion
 
-	#region Unity API
+#region Unity API
 	private void OnEnable()
 	{
 		actorSet.AddDictionary( collider_obstacle.gameObject.GetInstanceID(), this );
 		actorSet.AddDictionary( collider_actor.gameObject.GetInstanceID(), this );
 
 		collision_actor_Listener.triggerEnter += OnActorCollision;
+
+		levelRevealedListener.OnEnable();
+		levelFailedListener  .OnEnable();
 	}
 
 	private void OnDisable()
@@ -70,6 +77,9 @@ public class Actor : MonoBehaviour
 		actorSet.RemoveDictionary( collider_actor.gameObject.GetInstanceID() );
 
 		collision_actor_Listener.triggerEnter -= OnActorCollision;
+
+		levelRevealedListener.OnDisable();
+		levelFailedListener  .OnDisable();
 
 		if( ascentSequence != null )
 		{
@@ -89,13 +99,14 @@ public class Actor : MonoBehaviour
 		ragdollRigidbodies = ragdollBody.GetComponentsInChildren< Rigidbody >();
 		ragdollColliders   = ragdollBody.GetComponentsInChildren< Collider  >();
 		collider_actor     = collision_actor_Listener.GetComponent< Collider >();
+
+		levelRevealedListener.response = StartSwinging;
+		levelFailedListener.response   = ActivateRagdoll;
 	}
 
 	private void Start()
 	{
 		actorSpawned.Raise();
-
-		StartSwinging(); // put in to level revealed 
 	}
 
 	private void Update()
