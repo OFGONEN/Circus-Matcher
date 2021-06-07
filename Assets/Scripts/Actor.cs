@@ -42,6 +42,8 @@ public class Actor : MonoBehaviour
 	private Collider collider_actor;
 	[ SerializeField ] private Collider collider_obstacle;
 
+	private Sequence ascentTween;
+
 	#endregion
 
 	#region Unity API
@@ -59,6 +61,12 @@ public class Actor : MonoBehaviour
 		actorSet.RemoveDictionary( collider_actor.gameObject.GetInstanceID() );
 
 		collision_actor_Listener.triggerEnter -= OnActorCollision;
+
+		if(ascentTween != null)
+		{
+			ascentTween.Kill();
+			ascentTween = null;
+		}
 	}
 
 	private void Awake()
@@ -102,9 +110,13 @@ public class Actor : MonoBehaviour
 			ragdollBody.SetParent( coupleParent );
 			target.ragdollBody.SetParent( coupleParent );
 
-			coupleParent.DOMove( ragdollBody.position + Vector3.up * 4, 0.75f );
-			coupleParent.DOLookAt( ragdollBody.position + Vector3.up * 4, 0.75f );
-			coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f );
+			ascentTween = DOTween.Sequence();
+
+			ascentTween.Join( coupleParent.DOMove( ragdollBody.position + Vector3.up * 4, 0.75f ) );
+			ascentTween.Join( coupleParent.DOLookAt( ragdollBody.position + Vector3.up * 4, 0.75f ) );
+			ascentTween.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
+
+			ascentTween.OnComplete( () => ascentTween = null );
 		} );
 	}
 
