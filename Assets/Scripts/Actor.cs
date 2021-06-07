@@ -22,8 +22,18 @@ public class Actor : MonoBehaviour
 	public int coupleID;
 	public float rotateMultiplier;
 	public Transform ragdollBody;
+	public Rigidbody attachPoint;
 	public GameObject handle;
 	public ColliderListener_EventRaiser collision_actor_Listener;
+
+	// Property
+	public Rigidbody GetAttachPoint 
+	{
+		get 
+		{
+			return attachPoint;
+		}
+	}
 
 	// Private Fields
 	private Rigidbody[] ragdollRigidbodies;
@@ -31,6 +41,8 @@ public class Actor : MonoBehaviour
 
 	private Collider collider_actor;
 	[ SerializeField ] private Collider collider_obstacle;
+
+	private Sequence ascentTween;
 
 	#endregion
 
@@ -49,6 +61,12 @@ public class Actor : MonoBehaviour
 		actorSet.RemoveDictionary( collider_actor.gameObject.GetInstanceID() );
 
 		collision_actor_Listener.triggerEnter -= OnActorCollision;
+
+		if(ascentTween != null)
+		{
+			ascentTween.Kill();
+			ascentTween = null;
+		}
 	}
 
 	private void Awake()
@@ -65,6 +83,43 @@ public class Actor : MonoBehaviour
 #endregion
 
 #region API
+	public void Ascent(Actor target)
+	{
+		// FFLogger.Log( "Ascent: " + gameObject.name + " - " + target.gameObject.name );
+		ActivateRagdoll();
+		target.ActivateRagdoll();
+
+		var targetAttachPoint = target.GetAttachPoint;
+		var targetJoint       = targetAttachPoint.gameObject.AddComponent< FixedJoint >();
+
+		targetJoint.connectedBody       = attachPoint;
+		targetJoint.enablePreprocessing = false;
+		targetJoint.connectedMassScale  = 1;
+		targetJoint.massScale           = 1;
+
+
+		DOVirtual.DelayedCall( 0.25f, () => 
+		{
+			attachPoint.isKinematic = true;
+			attachPoint.useGravity  = false;
+
+			var coupleParent = new GameObject( "CoupleParent" ).transform;
+			coupleParent.position = attachPoint.position;
+			coupleParent.eulerAngles = attachPoint.rotation.eulerAngles;
+
+			ragdollBody.SetParent( coupleParent );
+			target.ragdollBody.SetParent( coupleParent );
+
+			ascentTween = DOTween.Sequence();
+
+			ascentTween.Join( coupleParent.DOMove( ragdollBody.position + Vector3.up * 4, 0.75f ) );
+			ascentTween.Join( coupleParent.DOLookAt( ragdollBody.position + Vector3.up * 4, 0.75f ) );
+			ascentTween.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
+
+			ascentTween.OnComplete( () => ascentTween = null );
+		} );
+	}
+
 	[Button]
 	public void ActivateRagdoll()
 	{
@@ -99,7 +154,7 @@ public class Actor : MonoBehaviour
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
 
-		FFLogger.Log( "Actor Collision: " + collider_actor.gameObject.GetInstanceID() + " - " + other.gameObject.GetInstanceID() );
+		// FFLogger.Log( "Actor Collision: " + collider_actor.gameObject.GetInstanceID() + " - " + other.gameObject.GetInstanceID() );
 
 		actorCollisionEvent.actorCollision.baseActorID   = collider_actor.gameObject.GetInstanceID();
 		actorCollisionEvent.actorCollision.targetActorID = other.gameObject.GetInstanceID();

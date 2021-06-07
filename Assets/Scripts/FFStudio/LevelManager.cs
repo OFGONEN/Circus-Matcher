@@ -110,8 +110,9 @@ namespace FFStudio
 
                     if (baseActor.coupleID == targetActor.coupleID)
                     {
-                        FFLogger.Log( "Ascent" );
-                    }
+                        // FFLogger.Log( "Ascent" );
+						baseActor.Ascent( targetActor );
+					}
                     else 
                     {
 						// levelFailedEvent.Raise();
@@ -120,14 +121,14 @@ namespace FFStudio
 					    targetActor.ActivateRagdoll();
                     }
 
-                    FFLogger.Log( "Collision between " + baseActor.gameObject.name + " - " + targetActor.gameObject.name );
+                    // FFLogger.Log( "Collision between " + baseActor.gameObject.name + " - " + targetActor.gameObject.name );
 					return;
 				}
             }
 
             // Collision is not found so add this collision to list
-            FFLogger.Log( "Actor Collision is not found!" );
-		    FFLogger.Log( "Actor Collision: " + changeEvent.actorCollision.baseActorID + " - " + changeEvent.actorCollision.targetActorID );
+            // FFLogger.Log( "Actor Collision is not found!" );
+		    // FFLogger.Log( "Actor Collision: " + changeEvent.actorCollision.baseActorID + " - " + changeEvent.actorCollision.targetActorID );
 			actorCollisions.Add( changeEvent.actorCollision );
 		}
 		#endregion
