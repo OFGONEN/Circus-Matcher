@@ -7,13 +7,18 @@ namespace FFStudio
 {
     public class LevelManager : MonoBehaviour
     {
-        #region Fields
+#region Fields
         [Header("Event Listeners")]
         public EventListenerDelegateResponse levelLoadedListener;
         public EventListenerDelegateResponse levelRevealedListener;
         public EventListenerDelegateResponse levelStartedListener;
+
+        // Level Related
+		public EventListenerDelegateResponse actor_SpawnedListener;
+		public EventListenerDelegateResponse actor_MathcedListener;
 		public EventListenerDelegateResponse collision_ObstacleListener;
 		public EventListenerDelegateResponse collision_ActorListener;
+
 
 		[Header("Fired Events")]
         public GameEvent levelFailedEvent;
@@ -25,10 +30,12 @@ namespace FFStudio
 		public ActorSet actorSet;
 
 		// Private Fields
+		int actor_Count = 0;
+		int actor_CoupleMatched_Count = 0;
 		List< ActorCollision > actorCollisions = new List< ActorCollision >( 8 );
-		#endregion
+#endregion
 
-		#region UnityAPI
+#region UnityAPI
 
 		private void OnEnable()
         {
@@ -37,6 +44,8 @@ namespace FFStudio
             levelStartedListener      .OnEnable();
 			collision_ObstacleListener.OnEnable();
 			collision_ActorListener   .OnEnable();
+			actor_SpawnedListener     .OnEnable();
+			actor_MathcedListener     .OnEnable();
 		}
 
         private void OnDisable()
@@ -46,6 +55,8 @@ namespace FFStudio
             levelStartedListener      .OnDisable();
 			collision_ObstacleListener.OnDisable();
 			collision_ActorListener   .OnDisable();
+			actor_SpawnedListener     .OnDisable();
+			actor_MathcedListener     .OnDisable();
         }
 
         private void Awake()
@@ -55,14 +66,18 @@ namespace FFStudio
             levelStartedListener.response       = LevelStartedResponse;
             collision_ObstacleListener.response = CollisionObstacleResponse;
 			collision_ActorListener.response    = CollisionActorResponse;
+			actor_SpawnedListener.response      = ActorSpawned;
+			actor_MathcedListener.response      = ActorCoupleMatchedResponse;
 		}
 
-        #endregion
+#endregion
 
-        #region Implementation
+#region Implementation
         void LevelLoadedResponse()
         {
-            levelProgress.SetValue(0);
+			actor_Count               = 0;
+			actor_CoupleMatched_Count = 0;
+			levelProgress.SetValue(0);
 			actorCollisions.Clear();
 		}
 
@@ -131,6 +146,26 @@ namespace FFStudio
 		    // FFLogger.Log( "Actor Collision: " + changeEvent.actorCollision.baseActorID + " - " + changeEvent.actorCollision.targetActorID );
 			actorCollisions.Add( changeEvent.actorCollision );
 		}
-		#endregion
+
+        void ActorCoupleMatchedResponse()
+        {
+			actor_CoupleMatched_Count++;
+
+			int coupleCount = actor_Count / 2;
+
+			float progress = actor_CoupleMatched_Count / ( float )coupleCount;
+
+			DOTween.To(
+				() => levelProgress.sharedValue, // Getter
+				x => levelProgress.SetValue( x ), // Setter
+				progress, // End value
+				GameSettings.Instance.ui_Entity_Move_TweenDuration /* duration */ );
+		}
+
+        void ActorSpawned()
+        {
+			actor_Count++;
+		}
+#endregion
 	}
 }

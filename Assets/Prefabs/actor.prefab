@@ -694,6 +694,8 @@ MonoBehaviour:
   levelProgressIndicator: {fileID: 11400000, guid: 189afb035a1e75944a5d173ee3ef0990, type: 2}
   actorSet: {fileID: 11400000, guid: b3ab471e037f2a54085cb1a31e34d71c, type: 2}
   actorCollisionEvent: {fileID: 11400000, guid: 2fa70591f03f3c54cb5bc81decff4acb, type: 2}
+  actorSpawned: {fileID: 11400000, guid: 4ab37cad67cc4344b8db0b31708162a4, type: 2}
+  ascentComplete: {fileID: 11400000, guid: d6826924259aaa94a8aa9543b6f948f1, type: 2}
   coupleID: 0
   rotateMultiplier: 0
   ragdollBody: {fileID: 7728207716754937792}

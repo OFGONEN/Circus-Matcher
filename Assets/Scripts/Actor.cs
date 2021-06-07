@@ -18,6 +18,8 @@ public class Actor : MonoBehaviour
 
 	[Header( "Fired Events" )]
 	public ActorCollisionEvent actorCollisionEvent;
+	public GameEvent actorSpawned;
+	public GameEvent ascentComplete;
 
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
@@ -78,6 +80,11 @@ public class Actor : MonoBehaviour
 		collider_actor     = collision_actor_Listener.GetComponent< Collider >();
 	}
 
+	private void Start()
+	{
+		actorSpawned.Raise();
+	}
+
 	private void Update()
 	{
 		transform.Rotate( Vector3.up * inputDirection.sharedValue.x * rotateMultiplier, Space.World ); // Rotate around Y axis
@@ -126,7 +133,7 @@ public class Actor : MonoBehaviour
 			ascentTween.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
 			ascentTween.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
 
-			ascentTween.OnComplete( () => ascentTween = null );
+			ascentTween.OnComplete( OnAscentDone );
 		} );
 	}
 
@@ -169,6 +176,12 @@ public class Actor : MonoBehaviour
 		actorCollisionEvent.actorCollision.baseActorID   = collider_actor.gameObject.GetInstanceID();
 		actorCollisionEvent.actorCollision.targetActorID = other.gameObject.GetInstanceID();
 		actorCollisionEvent.Raise();
+	}
+
+	private void OnAscentDone()
+	{
+		ascentTween = null;
+		ascentComplete.Raise();
 	}
 #endregion
 
