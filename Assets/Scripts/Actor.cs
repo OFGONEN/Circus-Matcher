@@ -28,6 +28,7 @@ public class Actor : MonoBehaviour
 	[ BoxGroup( "Configure" ), Tooltip( "Actor that has same couple ID will match correctly" ) ] public int coupleID;
 	[ BoxGroup( "Configure" ), Tooltip( "Multiply the input coming for rotating" ) ] public float rotateMultiplier;
 	[ BoxGroup( "Configure" ), Tooltip( "Swing duration for one way" ) ] public float swingDuration = 1f;
+	[ BoxGroup( "Configure" ), Tooltip( "Wait time every time a swing is complete" ) ] public float swingWaitDuration = 0.05f;
 
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
@@ -199,9 +200,16 @@ public class Actor : MonoBehaviour
 	{
 		swingSequence = DOTween.Sequence();
 
+		swingSequence.SetDelay( swingWaitDuration );
 		swingSequence.Append( handle.DOLocalPath( swingWayPoints, swingDuration ) );
-
+		swingSequence.AppendInterval( swingWaitDuration );
 		swingSequence.SetLoops( -1, LoopType.Yoyo );
+		swingSequence.OnStepComplete( OnSwingStopComplete );
+	}
+
+	private void OnSwingStopComplete()
+	{
+		FFLogger.Log( "Loop" );
 	}
 	private void OnActorCollision( Collider other )
 	{
