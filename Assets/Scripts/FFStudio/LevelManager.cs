@@ -12,7 +12,8 @@ namespace FFStudio
         public EventListenerDelegateResponse levelLoadedListener;
         public EventListenerDelegateResponse levelRevealedListener;
         public EventListenerDelegateResponse levelStartedListener;
-		public EventListenerDelegateResponse collisionObstacleListener;
+		public EventListenerDelegateResponse collision_ObstacleListener;
+		public EventListenerDelegateResponse collision_ActorListener;
 
 		[Header("Fired Events")]
         public GameEvent levelFailedEvent;
@@ -23,32 +24,37 @@ namespace FFStudio
         public SharedFloatProperty levelProgress;
 		public ActorSet actorSet;
 
+		// Private Fields
+		List< ActorCollision > actorCollisions = new List< ActorCollision >( 8 );
 		#endregion
 
 		#region UnityAPI
 
 		private void OnEnable()
         {
-            levelLoadedListener      .OnEnable();
-            levelRevealedListener    .OnEnable();
-            levelStartedListener     .OnEnable();
-			collisionObstacleListener.OnEnable();
+            levelLoadedListener       .OnEnable();
+            levelRevealedListener     .OnEnable();
+            levelStartedListener      .OnEnable();
+			collision_ObstacleListener.OnEnable();
+			collision_ActorListener   .OnEnable();
 		}
 
         private void OnDisable()
         {
-            levelLoadedListener      .OnDisable();
-            levelRevealedListener    .OnDisable();
-            levelStartedListener     .OnDisable();
-			collisionObstacleListener.OnDisable();
+            levelLoadedListener       .OnDisable();
+            levelRevealedListener     .OnDisable();
+            levelStartedListener      .OnDisable();
+			collision_ObstacleListener.OnDisable();
+			collision_ActorListener   .OnDisable();
         }
 
         private void Awake()
         {
-            levelLoadedListener.response       = LevelLoadedResponse;
-            levelRevealedListener.response     = LevelRevealedResponse;
-            levelStartedListener.response      = LevelStartedResponse;
-            collisionObstacleListener.response = CollisionObstacleResponse;
+            levelLoadedListener.response        = LevelLoadedResponse;
+            levelRevealedListener.response      = LevelRevealedResponse;
+            levelStartedListener.response       = LevelStartedResponse;
+            collision_ObstacleListener.response = CollisionObstacleResponse;
+			collision_ActorListener.response    = CollisionActorResponse;
 		}
 
         #endregion
@@ -57,7 +63,8 @@ namespace FFStudio
         void LevelLoadedResponse()
         {
             levelProgress.SetValue(0);
-        }
+			actorCollisions.Clear();
+		}
 
         void LevelRevealedResponse()
         {
@@ -71,7 +78,7 @@ namespace FFStudio
 
 		void CollisionObstacleResponse()
 		{
-			var changeEvent = collisionObstacleListener.gameEvent as ReferenceGameEvent;
+			var changeEvent = collision_ObstacleListener.gameEvent as ReferenceGameEvent;
 			var instanceId = ( changeEvent.eventValue as Collider ).gameObject.GetInstanceID();
 
 			Actor actor;
@@ -84,6 +91,35 @@ namespace FFStudio
             FFLogger.Log( "Activate Ragdoll: " + actor.gameObject.name );
 
 			// levelFailedEvent.Raise();
+		}
+
+        void CollisionActorResponse()
+        {
+			var changeEvent = collision_ActorListener.gameEvent as ActorCollisionEvent;
+
+            for( var i = 0; i < actorCollisions.Count; i++ )
+            {
+                if(actorCollisions[i].targetActorID == changeEvent.actorCollision.baseActorID )
+                {
+					// handle collision
+					Actor baseActor;
+					Actor targetActor;
+
+					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.baseActorID, out baseActor );
+					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.targetActorID, out targetActor );
+
+					baseActor.ActivateRagdoll();
+					targetActor.ActivateRagdoll();
+
+                    FFLogger.Log( "Collision between " + baseActor.gameObject.name + " - " + targetActor.gameObject.name );
+					return;
+				}
+            }
+
+            // Collision is not found so add this collision to list
+            FFLogger.Log( "Actor Collision is not found!" );
+		    FFLogger.Log( "Actor Collision: " + changeEvent.actorCollision.baseActorID + " - " + changeEvent.actorCollision.targetActorID );
+			actorCollisions.Add( changeEvent.actorCollision );
 		}
 		#endregion
 	}

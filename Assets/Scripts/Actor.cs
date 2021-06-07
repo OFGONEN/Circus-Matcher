@@ -14,6 +14,9 @@ public class Actor : MonoBehaviour
 	public SharedVector2 inputDirection;
 	public ActorSet actorSet;
 
+	[Header( "Fired Events" )]
+	public ActorCollisionEvent actorCollisionEvent;
+
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
 	public float rotateMultiplier;
@@ -95,7 +98,11 @@ public class Actor : MonoBehaviour
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
 
+		FFLogger.Log( "Actor Collision: " + collider_actor.gameObject.GetInstanceID() + " - " + other.gameObject.GetInstanceID() );
 
+		actorCollisionEvent.actorCollision.baseActorID   = collider_actor.gameObject.GetInstanceID();
+		actorCollisionEvent.actorCollision.targetActorID = other.gameObject.GetInstanceID();
+		actorCollisionEvent.Raise();
 	}
 #endregion
 

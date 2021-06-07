@@ -691,6 +691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputDirection: {fileID: 11400000, guid: 809be955130ad4d4c820371c48118228, type: 2}
   actorSet: {fileID: 11400000, guid: b3ab471e037f2a54085cb1a31e34d71c, type: 2}
+  actorCollisionEvent: {fileID: 11400000, guid: 2fa70591f03f3c54cb5bc81decff4acb, type: 2}
   rotateMultiplier: 0
   ragdollBody: {fileID: 7728207716754937792}
   handle: {fileID: 5872863122939052942}
