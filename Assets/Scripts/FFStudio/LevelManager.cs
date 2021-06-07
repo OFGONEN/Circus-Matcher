@@ -123,9 +123,11 @@ namespace FFStudio
 					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.baseActorID, out baseActor );
 					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.targetActorID, out targetActor );
 
-                    if (baseActor.coupleID == targetActor.coupleID)
+                    if ( /* Correct Couple */ baseActor.coupleID == targetActor.coupleID && 
+						 /* Both actors swinging foward */ baseActor.SwingingFoward && targetActor.SwingingFoward ) 
                     {
                         // FFLogger.Log( "Ascent" );
+
 						baseActor.Ascent( targetActor );
 					}
                     else 

@@ -9,7 +9,11 @@ using NaughtyAttributes;
 
 public class Actor : MonoBehaviour
 {
-	#region Fields
+#region Fields
+	[Header( "Event Listeners" )]
+	public EventListenerDelegateResponse levelRevealedListener;
+	public EventListenerDelegateResponse levelFailedListener;
+
 	[Header( "Shared Variables" )]
 	public SharedVector2 inputDirection;
 	public SharedReferenceProperty mainCamera;
@@ -21,13 +25,17 @@ public class Actor : MonoBehaviour
 	public GameEvent actorSpawned;
 	public GameEvent ascentComplete;
 
+	[ BoxGroup( "Configure" ), Tooltip( "Actor that has same couple ID will match correctly" ) ] public int coupleID;
+	[ BoxGroup( "Configure" ), Tooltip( "Multiply the input coming for rotating" ) ] public float rotateMultiplier;
+	[ BoxGroup( "Configure" ), Tooltip( "Swing duration for one way" ) ] public float swingDuration = 1f;
+	[ BoxGroup( "Configure" ), Tooltip( "Wait time every time a swing is complete" ) ] public float swingWaitDuration = 0.05f;
+
 	[HorizontalLine( 2, EColor.Blue )]
 	[Header( "Actor Related" )]
-	public int coupleID;
-	public float rotateMultiplier;
+	public Animator actorAnimator;
 	public Transform ragdollBody;
 	public Rigidbody attachPoint;
-	public GameObject handle;
+	public Transform handle;
 	public ColliderListener_EventRaiser collision_actor_Listener;
 
 	// Property
@@ -39,24 +47,48 @@ public class Actor : MonoBehaviour
 		}
 	}
 
-	// Private Fields
+	public bool SwingingFoward
+	{
+		get
+		{
+			return swingingFoward;
+		}
+	}
+
+	// Private Fields \\
+
+	// Ragdoll
 	private Rigidbody[] ragdollRigidbodies;
 	private Collider[] ragdollColliders;
 
+	// Actor colliders
 	private Collider collider_actor;
 	[ SerializeField ] private Collider collider_obstacle;
 
-	private Sequence ascentTween;
+	// Swinging path points
+	[ SerializeField, ReadOnly ] private Vector3[] swingWayPoints;
 
-	#endregion
+	// Sequences
+	private Sequence ascentSequence;
+	private Sequence swingSequence;
 
-	#region Unity API
+	// swing control variables
+	private GetNormalizedTime swingNormalizedTime;
+	private GetNormalizedTime next_swingNormalizedTime;
+	private bool swingingFoward = true;
+
+#endregion
+
+#region Unity API
 	private void OnEnable()
 	{
 		actorSet.AddDictionary( collider_obstacle.gameObject.GetInstanceID(), this );
 		actorSet.AddDictionary( collider_actor.gameObject.GetInstanceID(), this );
 
 		collision_actor_Listener.triggerEnter += OnActorCollision;
+
+		levelRevealedListener.OnEnable();
+		levelFailedListener  .OnEnable();
 	}
 
 	private void OnDisable()
@@ -66,10 +98,19 @@ public class Actor : MonoBehaviour
 
 		collision_actor_Listener.triggerEnter -= OnActorCollision;
 
-		if(ascentTween != null)
+		levelRevealedListener.OnDisable();
+		levelFailedListener  .OnDisable();
+
+		if( ascentSequence != null )
 		{
-			ascentTween.Kill();
-			ascentTween = null;
+			ascentSequence.Kill();
+			ascentSequence = null;
+		}
+
+		if( swingSequence != null )
+		{
+			swingSequence.Kill();
+			swingSequence = null;
 		}
 	}
 
@@ -78,11 +119,27 @@ public class Actor : MonoBehaviour
 		ragdollRigidbodies = ragdollBody.GetComponentsInChildren< Rigidbody >();
 		ragdollColliders   = ragdollBody.GetComponentsInChildren< Collider  >();
 		collider_actor     = collision_actor_Listener.GetComponent< Collider >();
+
+		foreach( var ragdoll in ragdollRigidbodies )
+		{
+			ragdoll.isKinematic = true;
+			ragdoll.useGravity  = false;
+		}
+
+		foreach( var collider in ragdollColliders )
+			collider.isTrigger = true;
+
+
+		levelRevealedListener.response = StartSwinging;
+		levelFailedListener.response   = ActivateRagdoll;
 	}
 
 	private void Start()
 	{
 		actorSpawned.Raise();
+		actorAnimator.SetFloat( "normalized", 0 );
+
+		swingingFoward = true;
 	}
 
 	private void Update()
@@ -107,7 +164,7 @@ public class Actor : MonoBehaviour
 		targetJoint.massScale           = 1;
 
 
-		DOVirtual.DelayedCall( 0.25f, () => 
+		DOVirtual.DelayedCall( 1f, () => 
 		{
 			// Make base rigidbody kinematic for tweening
 			attachPoint.isKinematic = true;
@@ -124,24 +181,32 @@ public class Actor : MonoBehaviour
 			var camera    = mainCamera.sharedValue as Camera;
 			var indicator = levelProgressIndicator.sharedValue as RectTransform;
 
-			var targetPosition   = camera.ScreenToWorldPoint( indicator.position );
-			    targetPosition.z = coupleParent.position.z;
+			var screenPos      = indicator.position;
+			    screenPos.z    = GameSettings.Instance.actor_ascentDistance_Z;
+			var targetPosition = camera.ScreenToWorldPoint( screenPos );
 
-			ascentTween = DOTween.Sequence();
+			ascentSequence = DOTween.Sequence();
 
-			ascentTween.Join( coupleParent.DOMove( targetPosition, 0.75f ) );
-			ascentTween.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
-			ascentTween.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
+			ascentSequence.Join( coupleParent.DOMove( targetPosition, 0.75f ) );
+			ascentSequence.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
+			ascentSequence.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
 
-			ascentTween.OnComplete( OnAscentDone );
+			ascentSequence.OnComplete( () => OnAscentDone( target ) );
 		} );
 	}
 
-	[Button]
 	public void ActivateRagdoll()
 	{
+		if( swingSequence != null )
+		{
+			swingSequence.Kill();
+			swingSequence = null;
+		}
+
 		collider_actor.enabled    = false;
 		collider_obstacle.enabled = false;
+
+		actorAnimator.enabled = false;
 
 		rotateMultiplier = 0;
 
@@ -166,6 +231,46 @@ public class Actor : MonoBehaviour
 #endregion
 
 #region Implementation
+	private void StartSwinging()
+	{
+		swingNormalizedTime      = GetNormalizedTime_Foward;
+		next_swingNormalizedTime = GetNormalizedTime_Backward;
+
+		swingSequence = DOTween.Sequence();
+
+		swingSequence.SetDelay( swingWaitDuration );
+		swingSequence.Append( handle.DOLocalPath( swingWayPoints, swingDuration ) );
+		swingSequence.AppendInterval( swingWaitDuration );
+		swingSequence.SetLoops( -1, LoopType.Yoyo );
+		swingSequence.OnStepComplete( OnSwingStopComplete );
+		swingSequence.OnUpdate( OnSwingUpdate );
+	}
+
+	private void OnSwingStopComplete()
+	{
+		var current                  = swingNormalizedTime;
+		    swingNormalizedTime      = next_swingNormalizedTime;
+		    next_swingNormalizedTime = current;
+
+		swingingFoward = !swingingFoward;
+	}
+
+	[Button]
+	private void OnSwingUpdate()
+	{
+		var normalizedTime = swingNormalizedTime();
+		actorAnimator.SetFloat( "normalized", normalizedTime );
+	}
+
+	private float GetNormalizedTime_Foward()
+	{
+		return swingSequence.ElapsedPercentage( false );
+	}
+
+	private float GetNormalizedTime_Backward()
+	{
+		return 1 - swingSequence.ElapsedPercentage( false );
+	}
 	private void OnActorCollision( Collider other )
 	{
 		collider_actor.enabled    = false;
@@ -178,10 +283,13 @@ public class Actor : MonoBehaviour
 		actorCollisionEvent.Raise();
 	}
 
-	private void OnAscentDone()
+	private void OnAscentDone( Actor target )
 	{
-		ascentTween = null;
+		ascentSequence = null;
 		ascentComplete.Raise();
+
+		ragdollBody.gameObject	     .SetActive( false );
+		target.ragdollBody.gameObject.SetActive( false );
 	}
 #endregion
 
@@ -189,6 +297,17 @@ public class Actor : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 
+	}
+
+	[ Button ]
+	private void SetSwingWayPoints()
+	{
+		var waypointsParent = transform.GetChild( 3 );
+
+		swingWayPoints = new Vector3[ waypointsParent.childCount ];
+
+		for( var i = 0; i < waypointsParent.childCount; i++ )
+			swingWayPoints[ i ] = waypointsParent.GetChild( i ).position - transform.position;
 	}
 #endif
 }

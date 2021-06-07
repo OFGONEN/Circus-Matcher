@@ -7,8 +7,9 @@ namespace FFStudio
 {
 	public class GameSettings : ScriptableObject
     {
-        #region Fields
-        public int maxLevelCount;
+#region Fields
+        [ BoxGroup ( "Actor" ) ] public float actor_ascentDistance_Z = 5;
+        [ HideInInspector ] public int maxLevelCount;
         [Foldout("UI Settings"), Tooltip("Duration of the movement for ui element")] public float ui_Entity_Move_TweenDuration;
         [Foldout("UI Settings"), Tooltip("Duration of the fading for ui element")] public float ui_Entity_Fade_TweenDuration;
 		[Foldout("UI Settings"), Tooltip("Duration of the scaling for ui element")] public float ui_Entity_Scale_TweenDuration;
@@ -28,9 +29,9 @@ namespace FFStudio
                 return returnInstance();
             }
         }
-        #endregion
+#endregion
 
-        #region Implementation
+#region Implementation
         static GameSettings LoadInstance()
         {
             if (instance == null)
@@ -45,6 +46,6 @@ namespace FFStudio
         {
             return instance;
         }
-        #endregion
+#endregion
     }
 }
