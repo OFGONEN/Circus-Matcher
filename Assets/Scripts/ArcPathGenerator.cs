@@ -134,27 +134,34 @@ public class ArcPathGenerator : MonoBehaviour
 
 #region Editor Only
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        /* Waypoints. */
-		if( waypoints == null || waypoints.Count < 2 )
+		try
 		{
-		    Gizmos.color = Color.red;
-			Gizmos.DrawWireSphere( transform.position + startPointOffset,  0.1f );
-		    Gizmos.color = Color.green;
-			Gizmos.DrawWireSphere( transform.position + endPointOffset, 0.1f );
-		}
-        else
-			for( var i = 0; i < waypoints.Count; i++ )
+			/* Waypoints. */
+			if( waypoints == null || waypoints.Count < 2 )
 			{
-				Gizmos.color = Color.Lerp( Color.red, Color.green, ( float )i / ( waypoints.Count - 1 ) );
-				Gizmos.DrawWireSphere( waypoints[ i ].position, 0.1f );
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireSphere( transform.position + startPointOffset, 0.1f );
+				Gizmos.color = Color.green;
+				Gizmos.DrawWireSphere( transform.position + endPointOffset, 0.1f );
 			}
+			else
+				for( var i = 0; i < waypoints.Count; i++ )
+				{
+					Gizmos.color = Color.Lerp( Color.red, Color.green, ( float )i / ( waypoints.Count - 1 ) );
+					Gizmos.DrawWireSphere( waypoints[ i ].position, 0.1f );
+				}
 
-		/* Line segments as dotted lines. */
-		Handles.color = Color.black;
-		if( waypointVectors != null && waypointVectors.Length > 0 )
-			Handles.DrawDottedLines( waypointVectors, 1.0f );
+			/* Line segments as dotted lines. */
+			Handles.color = Color.black;
+			if( waypointVectors != null && waypointVectors.Length > 0 )
+				Handles.DrawDottedLines( waypointVectors, 1.0f );
+		}
+		catch( MissingReferenceException )
+		{
+			OnValidate();
+		}
 	}
 #endif
 #endregion
