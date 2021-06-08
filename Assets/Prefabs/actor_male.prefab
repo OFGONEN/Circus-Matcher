@@ -1242,6 +1242,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5872863122939052945}
     m_Modifications:
+    - target: {fileID: 1132614546215619787, guid: f24d2e77e869786418b4310264e24b8e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1132614546215619787, guid: f24d2e77e869786418b4310264e24b8e, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a24599a11b9bcc946ab1350590920a60, type: 2}
     - target: {fileID: 2469219642179795290, guid: f24d2e77e869786418b4310264e24b8e, type: 3}
       propertyPath: m_Name
       value: actor_male_ragdoll
