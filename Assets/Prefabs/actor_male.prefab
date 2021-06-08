@@ -1033,7 +1033,7 @@ MonoBehaviour:
   attachPoint: {fileID: 7123128925518652905}
   handle: {fileID: 5872863122939052945}
   collision_actor_Listener: {fileID: 1540926114331659537}
-  collider_obstacle: {fileID: 2345453735840090735}
+  collider_obstacle: {fileID: 3456452277753295173}
   swingWayPoints:
   - {x: 2, y: -4, z: 0}
   - {x: 1.1111112, y: -4.521262, z: 0}
@@ -1225,9 +1225,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5196391306452043717, guid: 41ac85b3024d79f468065dbf557ad5d4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 41ac85b3024d79f468065dbf557ad5d4, type: 3}
---- !u!136 &2345453735840090735 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 2481818264418761686, guid: 41ac85b3024d79f468065dbf557ad5d4, type: 3}
+--- !u!65 &3456452277753295173 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 3245477097187967228, guid: 41ac85b3024d79f468065dbf557ad5d4, type: 3}
   m_PrefabInstance: {fileID: 215479201101066681}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7058135311156912098 stripped
