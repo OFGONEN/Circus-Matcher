@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6202454792633525761}
   - component: {fileID: 6202454792633525760}
   m_Layer: 0
-  m_Name: 'enviroment '
+  m_Name: trapeze_setup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -314,7 +314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5872863123627647745, guid: 6bb26d270923f27469eb7341bd5f1c65, type: 3}
       propertyPath: m_Name
-      value: actor
+      value: actor_1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bb26d270923f27469eb7341bd5f1c65, type: 3}
