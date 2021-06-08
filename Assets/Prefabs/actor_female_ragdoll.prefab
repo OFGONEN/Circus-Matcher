@@ -3271,7 +3271,7 @@ GameObject:
   - component: {fileID: 8725602066177709466}
   - component: {fileID: 3456438006549975008}
   m_Layer: 0
-  m_Name: actor_female_animated
+  m_Name: actor_female_ragdoll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3303,10 +3303,10 @@ Animator:
   m_GameObject: {fileID: 8240532292915662624}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1c2d55a2168b2194c82cbb847e9906d7, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7817d997985d6c84db68b013fcc1b472, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
