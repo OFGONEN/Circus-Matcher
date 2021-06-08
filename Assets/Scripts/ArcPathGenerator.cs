@@ -144,7 +144,7 @@ public class ArcPathGenerator : MonoBehaviour
 
 #region Editor Only
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
 		try
 		{
