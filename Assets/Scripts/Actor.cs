@@ -145,7 +145,7 @@ public class Actor : MonoBehaviour
 
 	private void Update()
 	{
-		transform.Rotate( Vector3.up * inputDirection.sharedValue.x * rotateMultiplier, Space.World ); // Rotate around Y axis
+		transform.Rotate( Vector3.up * inputDirection.sharedValue.x * rotateMultiplier * Time.deltaTime, Space.World ); // Rotate around Y axis
 	}
 #endregion
 
