@@ -21,6 +21,7 @@ public class Actor : MonoBehaviour
 	public ActorSet actorSet;
 
 	[Header( "Fired Events" )]
+	public ParticleSpawnEvent actorCollision_ParticleEvent;
 	public ActorCollisionEvent actorCollisionEvent;
 	public GameEvent actorSpawned;
 	public GameEvent ascentComplete;
@@ -162,6 +163,11 @@ public class Actor : MonoBehaviour
 		targetJoint.enablePreprocessing = false;
 		targetJoint.connectedMassScale  = 1;
 		targetJoint.massScale           = 1;
+
+		actorCollision_ParticleEvent.changePosition = true;
+		actorCollision_ParticleEvent.spawnPoint = attachPoint.position;
+		actorCollision_ParticleEvent.particleAlias = "Actor";
+		actorCollision_ParticleEvent.Raise();
 
 
 		DOVirtual.DelayedCall( 1f, () => 

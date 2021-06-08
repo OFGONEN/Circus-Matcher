@@ -1029,6 +1029,7 @@ MonoBehaviour:
   mainCamera: {fileID: 11400000, guid: dc41dfc4a52617f46a91ba5565841023, type: 2}
   levelProgressIndicator: {fileID: 11400000, guid: 189afb035a1e75944a5d173ee3ef0990, type: 2}
   actorSet: {fileID: 11400000, guid: b3ab471e037f2a54085cb1a31e34d71c, type: 2}
+  actorCollision_ParticleEvent: {fileID: 11400000, guid: 3b41daddf81b1f247a56b23ade8e5359, type: 2}
   actorCollisionEvent: {fileID: 11400000, guid: 2fa70591f03f3c54cb5bc81decff4acb, type: 2}
   actorSpawned: {fileID: 11400000, guid: 4ab37cad67cc4344b8db0b31708162a4, type: 2}
   ascentComplete: {fileID: 11400000, guid: d6826924259aaa94a8aa9543b6f948f1, type: 2}
