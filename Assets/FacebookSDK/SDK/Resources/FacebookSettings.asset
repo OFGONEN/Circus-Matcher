@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 0
+  - 1481865105479122
   appLabels:
-  - App Name
+  - Circus Matcher
   cookie: 1
   logging: 1
   status: 1
