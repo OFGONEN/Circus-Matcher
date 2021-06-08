@@ -32,36 +32,14 @@ public class ArcPathGenerator : MonoBehaviour
 		waypointVectors = null;
 	}
 	
+	private void OnSceneGUI()
+	{
+		ReconstructLists();
+	}
+	
 	private void OnValidate()
 	{
-		if( numberOfWaypoints <= 2 )
-			return;
-			
-		waypoints = new List< Transform >();
-
-		/* Clear the list(s) and reconstruct it from children GameObjects named "waypoint_#".
-		 * This is mainly for Gizmo visualizing purposes. */
-		for( var i = 0; i < transform.childCount; i++ )
-		{
-			var child = transform.GetChild( i );
-			if( child.name.Contains( "waypoint_" ) )
-			{
-				waypoints.Add( child );
-			}
-		}
-
-		waypointVectors = new Vector3[ 2 * ( waypoints.Count - 1 ) ];
-
-		for( var i = 0; i < waypoints.Count; i++ )
-		{
-			/* Don't include the pair [N-1, N]. */
-			if( i < waypoints.Count - 1 )
-			{
-				/* Next waypoint. */
-				waypointVectors[ i * 2 + 0 ] = waypoints[ i     ].position;
-				waypointVectors[ i * 2 + 1 ] = waypoints[ i + 1 ].position;
-			}
-		}
+		ReconstructLists();
 	}
 #endregion
 
@@ -130,6 +108,38 @@ public class ArcPathGenerator : MonoBehaviour
 		return Vector3.Distance( endPointOffset, startPointOffset ) > float.Epsilon && !Mathf.Approximately( height, 0 ) && 
                numberOfWaypoints > 2 && curve != null;
 	}
+	
+	private void ReconstructLists()
+	{
+		if( numberOfWaypoints <= 2 )
+			return;
+
+		waypoints = new List<Transform>();
+
+		/* Clear the list(s) and reconstruct it from children GameObjects named "waypoint_#".
+		 * This is mainly for Gizmo visualizing purposes. */
+		for( var i = 0; i < transform.childCount; i++ )
+		{
+			var child = transform.GetChild( i );
+			if( child.name.Contains( "waypoint_" ) )
+			{
+				waypoints.Add( child );
+			}
+		}
+
+		waypointVectors = new Vector3[ 2 * ( waypoints.Count - 1 ) ];
+
+		for( var i = 0; i < waypoints.Count; i++ )
+		{
+			/* Don't include the pair [N-1, N]. */
+			if( i < waypoints.Count - 1 )
+			{
+				/* Next waypoint. */
+				waypointVectors[ i * 2 + 0 ] = waypoints[ i ].position;
+				waypointVectors[ i * 2 + 1 ] = waypoints[ i + 1 ].position;
+			}
+		}
+	}
 #endregion
 
 #region Editor Only
@@ -160,7 +170,7 @@ public class ArcPathGenerator : MonoBehaviour
 		}
 		catch( MissingReferenceException )
 		{
-			OnValidate();
+			ReconstructLists();
 		}
 	}
 #endif
