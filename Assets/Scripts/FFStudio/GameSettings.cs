@@ -9,6 +9,9 @@ namespace FFStudio
     {
 #region Fields
         [ BoxGroup ( "Actor" ) ] public float actor_ascentDistance_Z = 5;
+        [ BoxGroup ( "Actor" ) ] public float actor_ascent_Duration = 0.75f;
+        [ BoxGroup ( "Actor" ) ] public float actor_ascent_Scale_Duration = 0.25f;
+        [ BoxGroup ( "Actor" ) ] public float actor_ascent_Scale_Delay = 0.5f;
         [ HideInInspector ] public int maxLevelCount;
         [Foldout("UI Settings"), Tooltip("Duration of the movement for ui element")] public float ui_Entity_Move_TweenDuration;
         [Foldout("UI Settings"), Tooltip("Duration of the fading for ui element")] public float ui_Entity_Fade_TweenDuration;

@@ -188,14 +188,15 @@ public class Actor : MonoBehaviour
 			var indicator = levelProgressIndicator.sharedValue as RectTransform;
 
 			var screenPos      = indicator.position;
-			    screenPos.z    = GameSettings.Instance.actor_ascentDistance_Z;
+			    // screenPos.z    = GameSettings.Instance.actor_ascentDistance_Z;
+			    screenPos.z    = Vector3.Distance( coupleParent.position, camera.transform.position );
 			var targetPosition = camera.ScreenToWorldPoint( screenPos );
 
 			ascentSequence = DOTween.Sequence();
 
-			ascentSequence.Join( coupleParent.DOMove( targetPosition, 0.75f ) );
-			ascentSequence.Join( coupleParent.DOLookAt( targetPosition, 0.75f ) );
-			ascentSequence.Join( coupleParent.DOScale( 0, 0.25f ).SetDelay( 0.5f ) );
+			ascentSequence.Join( coupleParent.DOMove( targetPosition, GameSettings.Instance.actor_ascent_Duration ) );
+			ascentSequence.Join( coupleParent.DOLookAt( targetPosition, GameSettings.Instance.actor_ascent_Duration ) );
+			ascentSequence.Join( coupleParent.DOScale( 0, GameSettings.Instance.actor_ascent_Scale_Duration ).SetDelay( GameSettings.Instance.actor_ascent_Scale_Delay ) );
 
 			ascentSequence.OnComplete( () => OnAscentDone( target ) );
 		} );
