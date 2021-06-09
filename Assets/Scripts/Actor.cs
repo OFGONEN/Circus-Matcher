@@ -171,8 +171,9 @@ public class Actor : MonoBehaviour
 		targetJoint.connectedMassScale  = 1;
 		targetJoint.massScale           = 1;
 
+
 		actorCollision_ParticleEvent.changePosition = true;
-		actorCollision_ParticleEvent.spawnPoint = attachPoint.position;
+		actorCollision_ParticleEvent.spawnPoint = ( attachPoint.position + targetAttachPoint.position ) / 2; 
 		actorCollision_ParticleEvent.particleAlias = "Actor";
 		actorCollision_ParticleEvent.Raise();
 
