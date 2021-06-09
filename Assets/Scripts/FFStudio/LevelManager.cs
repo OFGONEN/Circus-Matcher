@@ -123,11 +123,11 @@ namespace FFStudio
 					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.baseActorID, out baseActor );
 					actorSet.itemDictionary.TryGetValue( changeEvent.actorCollision.targetActorID, out targetActor );
 
-                    if ( /* Correct Couple */ baseActor.coupleID == targetActor.coupleID && 
-						 /* Both actors swinging foward */ baseActor.SwingingFoward && targetActor.SwingingFoward ) 
-                    {
-                        // FFLogger.Log( "Ascent" );
-
+					// if ( /* Correct Couple */ baseActor.coupleID == targetActor.coupleID && 
+					// 	 /* Both actors swinging foward */ baseActor.SwingingFoward && targetActor.SwingingFoward ) 
+					// * Swinging foward check is removed no matter what direction is the swinging its always valid
+					if( /* Correct Couple */ baseActor.coupleID == targetActor.coupleID )
+					{
 						baseActor.Ascent( targetActor );
 					}
                     else 
