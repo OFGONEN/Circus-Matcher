@@ -71,6 +71,7 @@ public class Actor : MonoBehaviour
 
 	// Sequences
 	private Sequence ascentSequence;
+	private Sequence ascent_IgnitionSequence;
 	private Sequence swingSequence;
 
 	// swing control variables
@@ -112,6 +113,12 @@ public class Actor : MonoBehaviour
 		{
 			swingSequence.Kill();
 			swingSequence = null;
+		}
+
+		if( ascent_IgnitionSequence != null )
+		{
+			ascent_IgnitionSequence.Kill();
+			ascent_IgnitionSequence = null;
 		}
 	}
 
@@ -169,8 +176,22 @@ public class Actor : MonoBehaviour
 		actorCollision_ParticleEvent.particleAlias = "Actor";
 		actorCollision_ParticleEvent.Raise();
 
+		attachPoint.isKinematic = true;
+		attachPoint.useGravity  = false;
 
-		DOVirtual.DelayedCall( 1f, () => 
+		ascent_IgnitionSequence = DOTween.Sequence();
+
+		ascent_IgnitionSequence.AppendInterval( GameSettings.Instance.actor_ascent_IgnitionTime );
+
+		ascent_IgnitionSequence.AppendCallback( () =>
+		{
+			attachPoint.isKinematic = false;
+			attachPoint.useGravity = true;
+		} );
+
+		ascent_IgnitionSequence.AppendInterval( GameSettings.Instance.actor_ascent_FallDuration );
+
+		ascent_IgnitionSequence.AppendCallback( () =>
 		{
 			// Make base rigidbody kinematic for tweening
 			attachPoint.isKinematic = true;
@@ -199,7 +220,10 @@ public class Actor : MonoBehaviour
 			ascentSequence.Join( coupleParent.DOScale( 0, GameSettings.Instance.actor_ascent_Scale_Duration ).SetDelay( GameSettings.Instance.actor_ascent_Scale_Delay ) );
 
 			ascentSequence.OnComplete( () => OnAscentDone( target ) );
+
 		} );
+
+		ascent_IgnitionSequence.OnComplete( () => ascent_IgnitionSequence = null );
 	}
 
 	public void ActivateRagdoll()

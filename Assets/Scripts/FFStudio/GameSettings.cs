@@ -8,7 +8,12 @@ namespace FFStudio
 	public class GameSettings : ScriptableObject
     {
 #region Fields
-        [ BoxGroup ( "Actor" ) ] public float actor_ascentDistance_Z = 5;
+        [ BoxGroup ( "Actor" ), Tooltip( "After first collision actors hanging in air duration " ) ] 
+        public float actor_ascent_IgnitionTime = 0.25f; // Anticipation graph straight line duration
+
+        [ BoxGroup ( "Actor" ), Tooltip( "After hanging in the air falling duration" ) ] 
+        public float actor_ascent_FallDuration = 0.25f; // Anticipation graph declining duration 
+
         [ BoxGroup ( "Actor" ) ] public float actor_ascent_Duration = 0.75f;
         [ BoxGroup ( "Actor" ) ] public float actor_ascent_Scale_Duration = 0.25f;
         [ BoxGroup ( "Actor" ) ] public float actor_ascent_Scale_Delay = 0.5f;
