@@ -256,7 +256,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 25, y: 100}
+  m_SizeDelta: {x: 25, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1133200698
 MonoBehaviour:
@@ -313,6 +313,7 @@ MonoBehaviour:
   startPosition: {x: 0, y: 0, z: 0}
   startScale: {x: 0, y: 0, z: 0}
   indicatorProgress: {fileID: 11400000, guid: 43438d720c16f2e4aa5a19d520e1e15f, type: 2}
+  offsetPercentage: 2.5
 --- !u!114 &1133200701
 MonoBehaviour:
   m_ObjectHideFlags: 0

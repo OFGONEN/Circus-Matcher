@@ -11,6 +11,8 @@ namespace FFStudio
 #region Fields
 		public SharedFloatProperty indicatorProgress;
 
+		public float offsetPercentage;
+
 		// Private Fields
 		private RectTransform indicatingParent;
 
@@ -34,6 +36,8 @@ namespace FFStudio
         {
 			indicatingParent = uiTransform.parent.GetComponent< RectTransform >();
 			indicatingParent.GetWorldCorners( indicatingParentWorldPos );
+
+			offsetPercentage = offsetPercentage / 100;
 
 			GetIndicatorPositions();
 			OnProgressChange();

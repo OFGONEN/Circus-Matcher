@@ -28,7 +28,13 @@ namespace FFStudio
         {
             indicator_BasePosition = (indicatingParentWorldPos[ 0 ] + indicatingParentWorldPos[ 1 ]) / 2;
             indicator_EndPosition  = (indicatingParentWorldPos[ 2 ] + indicatingParentWorldPos[ 3 ]) / 2;
-        }
+
+			var width = indicator_EndPosition.x - indicator_BasePosition.x;
+			var horizontalOffset = width * offsetPercentage;
+
+			indicator_BasePosition.x += horizontalOffset;
+			indicator_EndPosition.x  -= horizontalOffset;
+		}
 #endregion
 	}
 }
