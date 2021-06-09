@@ -364,6 +364,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 124199663512924951, guid: 797da1a9d36c74949965f5c3a417702f, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ab1070764c49815468c57e957957977d, type: 2}
+    - target: {fileID: 124199663512924951, guid: 797da1a9d36c74949965f5c3a417702f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5706610935721751732, guid: ab1070764c49815468c57e957957977d, type: 2}
+    - target: {fileID: 124199664086749822, guid: 797da1a9d36c74949965f5c3a417702f, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ab1070764c49815468c57e957957977d, type: 2}
+    - target: {fileID: 124199664086749822, guid: 797da1a9d36c74949965f5c3a417702f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5706610935721751732, guid: ab1070764c49815468c57e957957977d, type: 2}
+    - target: {fileID: 124199664755808477, guid: 797da1a9d36c74949965f5c3a417702f, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ab1070764c49815468c57e957957977d, type: 2}
+    - target: {fileID: 124199664755808477, guid: 797da1a9d36c74949965f5c3a417702f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5706610935721751732, guid: ab1070764c49815468c57e957957977d, type: 2}
     - target: {fileID: 124199665187945362, guid: 797da1a9d36c74949965f5c3a417702f, type: 3}
       propertyPath: m_Name
       value: canvas_UIManager
