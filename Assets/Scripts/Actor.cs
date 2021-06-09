@@ -246,7 +246,7 @@ public class Actor : MonoBehaviour
 		swingSequence = DOTween.Sequence();
 
 		swingSequence.SetDelay( swingWaitDuration );
-		swingSequence.Append( handle.DOLocalPath( swingWayPoints, swingDuration ) );
+		swingSequence.Append( handle.DOLocalPath( swingWayPoints, swingDuration ).SetEase( Ease.Linear ) );
 		swingSequence.AppendInterval( swingWaitDuration );
 		swingSequence.SetLoops( -1, LoopType.Yoyo );
 		swingSequence.OnStepComplete( OnSwingStopComplete );
