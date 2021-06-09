@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2dda4d38786faa47bc9a024540d1517, type: 3}
+  m_Name: actor_particle_pool
+  m_EditorClassIdentifier: 
+  stackSize: 2
+  poolEntity: {fileID: 5812961380176761383, guid: f53a927f441c08d439d313079ba81f97, type: 3}
