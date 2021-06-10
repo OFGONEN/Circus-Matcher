@@ -177,6 +177,9 @@ public class Actor : MonoBehaviour
 		actorCollision_ParticleEvent.particleAlias = "Actor";
 		actorCollision_ParticleEvent.Raise();
 
+		transform.DOMove( transform.position + Vector3.up * 20, 1 ).OnComplete( DisableChilds );
+		target.transform.DOMove( target.transform.position + Vector3.up * 20, 1 ).OnComplete( target.DisableChilds );
+
 		attachPoint.isKinematic = true;
 		attachPoint.useGravity  = false;
 
@@ -322,6 +325,14 @@ public class Actor : MonoBehaviour
 
 		ragdollBody.gameObject	     .SetActive( false );
 		target.ragdollBody.gameObject.SetActive( false );
+	}
+
+	private void DisableChilds()
+	{
+		for( var i = 0; i < transform.childCount; i++ )
+		{
+			transform.GetChild( i ).gameObject.SetActive( false );
+		}
 	}
 #endregion
 
