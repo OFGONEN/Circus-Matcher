@@ -49,6 +49,15 @@ MonoBehaviour:
     gameEvent: {fileID: 11400000, guid: be5502ede7f194b4cad32082aa9196eb, type: 2}
   levelStartedListener:
     gameEvent: {fileID: 11400000, guid: efef06bf257ee27438d6c2aab4936226, type: 2}
+  actor_SpawnedListener:
+    gameEvent: {fileID: 11400000, guid: 4ab37cad67cc4344b8db0b31708162a4, type: 2}
+  actor_MathcedListener:
+    gameEvent: {fileID: 11400000, guid: d6826924259aaa94a8aa9543b6f948f1, type: 2}
+  collision_ObstacleListener:
+    gameEvent: {fileID: 11400000, guid: 56492e550f1546649a8b2ce31dc81d84, type: 2}
+  collision_ActorListener:
+    gameEvent: {fileID: 11400000, guid: 2fa70591f03f3c54cb5bc81decff4acb, type: 2}
   levelFailedEvent: {fileID: 11400000, guid: ec850936269bc2e47b26cfebd8bdad97, type: 2}
   levelCompleted: {fileID: 11400000, guid: 28d976b368abc004a924d98b1751a17d, type: 2}
   levelProgress: {fileID: 11400000, guid: 43438d720c16f2e4aa5a19d520e1e15f, type: 2}
+  actorSet: {fileID: 11400000, guid: b3ab471e037f2a54085cb1a31e34d71c, type: 2}

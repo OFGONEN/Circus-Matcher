@@ -8,7 +8,9 @@ namespace FFEditor
 {
 	public static class FFShortcutUtility
 	{
-        [MenuItem("FFShortcut/TakeScreenShot #F12")]
+		static Transform currentTransform = null;
+
+		[MenuItem("FFShortcut/TakeScreenShot #F12")]
         public static void TakeScreenShot()
         {
 			int counter = 0;
@@ -89,5 +91,24 @@ namespace FFEditor
 
 			Selection.SetActiveObjectWithContext( gameSettings, gameSettings );
 		}
+
+
+        [MenuItem("FFStudios/Copy Transform &c")]
+		static void CopyTransform()
+		{
+			currentTransform = Selection.activeGameObject.transform;
+		}
+
+        [MenuItem("FFStudios/Paste Transform &v")]
+		static void PasteTransform()
+		{
+			var gameObject = Selection.activeGameObject.transform;
+
+			var target             = gameObject.transform;
+				target.position    = currentTransform.position;
+				target.eulerAngles = currentTransform.eulerAngles;
+				target.localScale  = currentTransform.localScale;
+		}
+	
 	}
 }

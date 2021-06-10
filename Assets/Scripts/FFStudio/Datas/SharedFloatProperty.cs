@@ -16,5 +16,12 @@ namespace FFStudio
 				changeEvent?.Invoke();
 			}
 		}
+
+#region UnityAPI
+		private void OnValidate()
+		{
+			changeEvent?.Invoke();
+		}
+#endregion
 	}
 }

@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a385bd3b4416492409284c9a366cb52a, type: 3}
   m_Name: game_settings
   m_EditorClassIdentifier: 
-  maxLevelCount: 1
+  actor_ascent_IgnitionTime: 1
+  actor_ascent_FallDuration: 0.3
+  actor_ascent_Duration: 1.5
+  actor_ascent_Scale_Duration: 0.25
+  actor_ascent_Scale_Delay: 1.25
+  maxLevelCount: 5
   ui_Entity_Move_TweenDuration: 0.5
   ui_Entity_Fade_TweenDuration: 0.5
   ui_Entity_Scale_TweenDuration: 0.5
   ui_Entity_FloatingMove_TweenDuration: 0.5
-  swipeThreshold: 2
+  swipeThreshold: 1

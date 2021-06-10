@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cbbcd610c23aa4c883f06c0505bba5, type: 3}
   m_Name: level_progress
   m_EditorClassIdentifier: 
-  sharedValue: 0
+  sharedValue: 0.31

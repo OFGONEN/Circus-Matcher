@@ -61,7 +61,7 @@ namespace FFStudio
             levelCompleteResponse.response = LevelCompleteResponse;
             tapInputListener.response = ExtensionMethods.EmptyMethod;
 
-            informationText.textRenderer.text = "Tap to Foo";
+            informationText.textRenderer.text = "Tap to Start";
         }
         #endregion
 
