@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: actor_particle_pool
   m_EditorClassIdentifier: 
   stackSize: 2
-  poolEntity: {fileID: 5812961380176761383, guid: f53a927f441c08d439d313079ba81f97, type: 3}
+  poolEntity: {fileID: -6681342023970323301, guid: 67a121b304f56054394bbbc306cda82f, type: 3}
