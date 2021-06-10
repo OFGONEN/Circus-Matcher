@@ -345,7 +345,7 @@ public class Actor : MonoBehaviour
 	[ Button ]
 	private void SetSwingWayPoints()
 	{
-		var waypointsParent = transform.GetChild( 3 );
+		var waypointsParent = transform.GetChild( 4 );
 
 		swingWayPoints = new Vector3[ waypointsParent.childCount ];
 
