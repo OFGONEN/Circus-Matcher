@@ -78,6 +78,7 @@ public class Actor : MonoBehaviour
 	private GetNormalizedTime swingNormalizedTime;
 	private GetNormalizedTime next_swingNormalizedTime;
 	private bool swingingFoward = true;
+	private float swing_NormalizedTime = 0;
 
 #endregion
 
@@ -293,18 +294,28 @@ public class Actor : MonoBehaviour
 	[Button]
 	private void OnSwingUpdate()
 	{
-		var normalizedTime = swingNormalizedTime();
-		actorAnimator.SetFloat( "normalized", normalizedTime );
+		swing_NormalizedTime = swingNormalizedTime();
+		actorAnimator.SetFloat( "normalized", swing_NormalizedTime );
 	}
 
 	private float GetNormalizedTime_Foward()
 	{
-		return swingSequence.ElapsedPercentage( false );
+		var normalizedTime = swingSequence.ElapsedPercentage( false );
+
+		if( normalizedTime < swing_NormalizedTime )
+			normalizedTime = swing_NormalizedTime;
+
+		return normalizedTime;
 	}
 
 	private float GetNormalizedTime_Backward()
 	{
-		return 1 - swingSequence.ElapsedPercentage( false );
+		var normalizedTime = 1 - swingSequence.ElapsedPercentage( false );
+
+		if( normalizedTime > swing_NormalizedTime )
+			normalizedTime = swing_NormalizedTime;
+
+		return normalizedTime;
 	}
 	private void OnActorCollision( Collider other )
 	{
